@@ -186,6 +186,8 @@ export async function getDeleteUserProfile(
  * @param next error
  *
  * @description sending reset passwrod link into user emails
+ *
+ * @todo sending email logic to write
  */
 export async function resetUserPassword(
   req: Request,
