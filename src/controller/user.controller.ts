@@ -202,7 +202,31 @@ export async function resetUserPassword(
     }
 
     // send email
+    const resetToken = await user.generateResetToken();
+    res.send({ resetToken });
+  } catch (err) {
+    next(err);
+  }
+}
 
+/**
+ *
+ * @param req resetToken, password
+ * @param res ok
+ * @param next error
+ */
+export async function resetUserPasswordConfirmation(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  try {
+    const { resetToken, confirmPassword } = req.body;
+
+    const user = await User.getCredentialsForResetToken(
+      resetToken,
+      confirmPassword
+    );
     res.send();
   } catch (err) {
     next(err);

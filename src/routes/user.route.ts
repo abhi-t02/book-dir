@@ -5,6 +5,7 @@ import {
   getDeleteUserProfile,
   getUserProfile,
   resetUserPassword,
+  resetUserPasswordConfirmation,
   userLogOut,
   userLogin,
   userLogoutAll,
@@ -30,6 +31,7 @@ router.get("/logout", <any>authToken, <any>userLogOut);
 router.get("/logoutAll", <any>authToken, <any>userLogoutAll);
 
 router.post("/reset-password", resetUserPassword);
+router.post("/reset-password-confirmation", resetUserPasswordConfirmation);
 
 router
   .route("/")
