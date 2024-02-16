@@ -2,7 +2,7 @@ import express, { Request, Response, NextFunction } from "express";
 import cors from "cors";
 
 import morganMiddleware from "./middleware/logger.middleware";
-import { userRouter } from "./routes";
+import { bookRouter, userRouter } from "./routes";
 
 import CustomError from "./types/error.types";
 
@@ -20,6 +20,7 @@ app.use(morganMiddleware);
 
 // Routes
 app.use("/api/users", userRouter);
+app.use("/api/books", bookRouter);
 
 // error handler
 app.use((err: CustomError, req: Request, res: Response, next: NextFunction) => {
