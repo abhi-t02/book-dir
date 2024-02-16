@@ -45,3 +45,26 @@ export async function addBook(req: Request, res: Response, next: NextFunction) {
     next(err);
   }
 }
+
+/**
+ *
+ * @param req params: id
+ * @param res book object
+ * @param next error 500
+ * @description To get single book by params id
+ */
+export async function getBookById(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  try {
+    const book = await Book.findById(req.params.id);
+    if (!book) {
+      throw new Error("No book found");
+    }
+    res.json(book);
+  } catch (err) {
+    next(err);
+  }
+}
