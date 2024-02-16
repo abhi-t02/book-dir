@@ -1,6 +1,9 @@
+import path from "path";
+
 import winston from "winston";
 import morgan from "morgan";
 
+const logPath = path.join(__dirname, "../../logs/app.log");
 const { combine, timestamp, json } = winston.format;
 
 const logger = winston.createLogger({
@@ -11,7 +14,12 @@ const logger = winston.createLogger({
     }),
     json()
   ),
-  transports: [new winston.transports.Console()],
+  transports: [
+    new winston.transports.Console(),
+    // new winston.transports.File({
+    //   filename: logPath,
+    // }),
+  ],
 });
 
 const morganMiddleware = morgan(
