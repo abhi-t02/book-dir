@@ -1,6 +1,15 @@
 import { NextFunction, Request, Response } from "express";
 import Book from "../models/book.model";
 
+const genreOptions = [
+  "Action",
+  "Fiction",
+  "Comedy",
+  "Adventure",
+  "Education",
+  "Romance",
+];
+
 /**
  *
  * @param req none
@@ -16,8 +25,36 @@ export async function getAllBooks(
   next: NextFunction
 ) {
   try {
-    const books = await Book.find();
-    res.json(books);
+    const page = Number.parseInt(<string>req.query.page) - 1 || 0;
+    const limit = Number.parseInt(<string>req.query.limit) || 5;
+    const search = req.query.search || "";
+    const sort = <string>req.query.sort || "title";
+    const sortBy = req.query.sortBy || "asc";
+    let genre: string | string[] = <string>req.query.genre || "All";
+    const sortOpt: any = {};
+
+    sortOpt[sort] = sortBy;
+    genre = genre === "All" ? [...genreOptions] : genre.split(",");
+
+    const books = await Book.find({ title: { $regex: search, $options: "i" } })
+      .where("genre")
+      .in([...genre])
+      .sort(sortOpt)
+      .skip(page * limit)
+      .limit(limit);
+
+    const total = await Book.countDocuments({
+      genre: { $in: [...genre] },
+      title: { $regex: search, $options: "i" },
+    });
+
+    res.json({
+      total,
+      page: page + 1,
+      limit,
+      genres: genreOptions,
+      books,
+    });
   } catch (err) {
     next(err);
   }
