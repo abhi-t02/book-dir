@@ -3,6 +3,7 @@ import { compare } from "bcrypt";
 
 import { authRequest } from "../types/request.type";
 import User, { IUser } from "../models/user.model";
+import { loginUserInput, registerUserInput } from "../schema/user.schema";
 
 /**
  *
@@ -31,7 +32,7 @@ export async function getUserProfile(
  * @param next error
  */
 export async function userSignUp(
-  req: Request,
+  req: Request<{}, {}, registerUserInput["body"]>,
   res: Response,
   next: NextFunction
 ) {
@@ -56,7 +57,7 @@ export async function userSignUp(
  * @param next error
  */
 export async function userLogin(
-  req: Request,
+  req: Request<{}, {}, loginUserInput["body"]>,
   res: Response,
   next: NextFunction
 ) {

@@ -12,6 +12,8 @@ import {
   userProfileUpdate,
   userSignUp,
 } from "../controller/user.controller";
+import validate from "../middleware/validateResource.middleware";
+import { loginUserSchema, registerUserSchema } from "../schema/user.schema";
 
 const router = Router();
 
@@ -19,14 +21,14 @@ const router = Router();
  * POST /api/users/register
  * Register user
  */
-router.post("/register", userSignUp);
+router.post("/register", validate(registerUserSchema), userSignUp);
 
 /**
  * POST /api/users/login
  * Login user
  * response: token
  */
-router.post("/login", userLogin);
+router.post("/login", validate(loginUserSchema), userLogin);
 router.get("/logout", <any>authToken, <any>userLogOut);
 router.get("/logoutAll", <any>authToken, <any>userLogoutAll);
 
